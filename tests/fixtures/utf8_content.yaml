@@ -1,0 +1,9 @@
+# contains real non-ASCII UTF-8 (the goat emoji holds byte 0x90, which the
+# Windows default codec cp1252 cannot decode) - the parser must read this
+# identically on every platform because it opens files as utf-8 explicitly
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greeting-config
+data:
+  MESSAGE: "welcome to the cluster 🐐 🚨"

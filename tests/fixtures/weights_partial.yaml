@@ -1,0 +1,3 @@
+# only one key given: the other three should fall back to the defaults,
+# and 0.30 is exactly the default for exploitability so the sum stays 1.0
+exploitability: 0.30

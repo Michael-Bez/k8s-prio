@@ -1,0 +1,19 @@
+# a web application deployment with poor container settings
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: shop
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: web
+          image: mycompany/webapp:latest
+          securityContext:
+            runAsUser: 0
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_ADMIN

@@ -1,0 +1,37 @@
+# Scans the demo manifests on every pull request and on pushes to the main branch
+
+# In a GitOps setup the repository is the production configuration so the place to intervene is here before a merge
+name: k8s-prio scan
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - uses: actions/setup-python@v7.0.0
+        with:
+          # the minimum my project supports so CI proves that floor works
+          python-version: "3.10"
+
+      - run: pip install .
+
+      - name: Scan manifests
+        # stdout IS the annotation stream, so it is not redirected to a file
+
+        # the runner reads the ::error and ::warning lines straight out of the
+        # job log which needs no upload step and no extra permissions so this
+        # works on a private repository
+        #
+        # --fail-on Act blocks the merge only on the most urgent findings, A
+        # finding counts if EITHER engine rates it Act so a blocker cannot
+        # slip through because one of the two ranked it lower
+        run: k8s-prio scan ./demo-manifests/ --format github --fail-on Act

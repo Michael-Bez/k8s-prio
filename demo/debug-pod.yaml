@@ -1,0 +1,20 @@
+# a "temporary" debug pod that someone forgot to delete
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+spec:
+  hostNetwork: true
+  hostPID: true
+  containers:
+    - name: tools
+      image: ubuntu
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: host-root
+          mountPath: /host
+  volumes:
+    - name: host-root
+      hostPath:
+        path: /

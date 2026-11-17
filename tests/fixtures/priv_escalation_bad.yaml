@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: escalator
+spec:
+  containers:
+    - name: app
+      image: app:1.0
+      securityContext:
+        allowPrivilegeEscalation: true

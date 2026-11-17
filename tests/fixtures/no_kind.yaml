@@ -1,0 +1,11 @@
+# first document looks like a Helm values file, not a Kubernetes object
+replicas: 3
+image: nginx
+---
+# this one is valid (and has no spec at all)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MODE: production

@@ -1,0 +1,11 @@
+# runAsNonRoot is set at pod level, which covers the container
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+    - name: app
+      image: app:1.0

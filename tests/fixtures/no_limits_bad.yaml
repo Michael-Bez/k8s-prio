@@ -1,0 +1,13 @@
+# requests alone are not enough, the rule wants limits
+apiVersion: v1
+kind: Pod
+metadata:
+  name: greedy
+spec:
+  containers:
+    - name: app
+      image: app:1.0
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128Mi

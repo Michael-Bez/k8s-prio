@@ -1,0 +1,9 @@
+# a Helm template - the {{ }} bits are not valid YAML
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ .Release.Name }}-web
+spec:
+  containers:
+    - name: web
+      image: nginx

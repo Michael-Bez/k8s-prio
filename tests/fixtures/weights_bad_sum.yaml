@@ -1,0 +1,5 @@
+# invalid: everything positive but the sum is 2.0, not 1.0
+exploitability: 0.50
+impact: 0.50
+exposure: 0.50
+remediation_ease: 0.50

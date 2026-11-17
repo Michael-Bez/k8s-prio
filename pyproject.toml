@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "k8s-prio"
+version = "0.1.0"
+description = "Detects security misconfigurations in Kubernetes YAML manifests"
+
+requires-python = ">=3.10"
+dependencies = ["pyyaml"]
+
+[project.scripts]
+k8s-prio = "k8s_prio.cli:main"
+
+[tool.setuptools]
+packages = ["k8s_prio", "k8s_prio.rules", "k8s_prio.scoring"]
+
+[tool.pytest.ini_options]
+# only look in tests/, otherwise pytest tries to collect the python files
+# inside the downloaded corpus under corpus/
+testpaths = ["tests"]

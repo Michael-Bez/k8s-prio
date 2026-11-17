@@ -1,0 +1,14 @@
+# the privileged container hides in initContainers
+apiVersion: v1
+kind: Pod
+metadata:
+  name: setup-pod
+spec:
+  initContainers:
+    - name: setup
+      image: setup:1.0
+      securityContext:
+        privileged: true
+  containers:
+    - name: app
+      image: app:1.0

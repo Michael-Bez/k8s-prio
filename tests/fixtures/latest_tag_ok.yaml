@@ -1,0 +1,11 @@
+# the registry port colon must not be mistaken for a tag
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pinned
+spec:
+  containers:
+    - name: web
+      image: nginx:1.25.3
+    - name: app
+      image: registry.local:5000/app:2.1

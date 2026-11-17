@@ -1,0 +1,29 @@
+# a pod that passes every rule, plus the NetworkPolicy covering its namespace
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  namespace: secure
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+    - name: app
+      image: app:3.1.4
+      securityContext:
+        allowPrivilegeEscalation: false
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: secure
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress

@@ -1,0 +1,31 @@
+# not part of demo-manifests/, copy this file into
+# demo-manifests/ in a branch and open a pull request: the scan workflow
+# will fail the check and annotate these exact lines
+
+# I built this to trip BOTH gates at once so one screenshot shows the whole design:
+#   severity gating   - privileged: true is Act on both engines so --fail-on Act blocks the merge
+#   divergence        - allowPrivilegeEscalation: true is heuristic Attend but SSVC Track, two bands apart, 
+#                       which is the case to send to a human rather than
+#                       picking a side
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+  namespace: shop
+spec:
+  hostNetwork: true
+  hostPID: true
+  containers:
+    - name: tools
+      image: ubuntu:latest
+      securityContext:
+        privileged: true
+        allowPrivilegeEscalation: true
+        runAsUser: 0
+      volumeMounts:
+        - name: host-root
+          mountPath: /host
+  volumes:
+    - name: host-root
+      hostPath:
+        path: /

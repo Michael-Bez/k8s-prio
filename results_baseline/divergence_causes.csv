@@ -1,0 +1,4 @@
+cause,findings,one_band,multi_band
+remediation-pricing,35,35,0
+impact-granularity,1,0,1
+band-floor-mismatch,23,23,0

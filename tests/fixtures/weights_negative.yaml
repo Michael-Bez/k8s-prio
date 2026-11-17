@@ -1,0 +1,5 @@
+# invalid: a negative weight
+exploitability: -0.50
+impact: 0.90
+exposure: 0.40
+remediation_ease: 0.20

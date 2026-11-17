@@ -1,0 +1,5 @@
+# a full valid override, sums to 1.0
+exploitability: 0.40
+impact: 0.30
+exposure: 0.20
+remediation_ease: 0.10

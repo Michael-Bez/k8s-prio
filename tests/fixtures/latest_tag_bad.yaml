@@ -1,0 +1,11 @@
+# one container with an explicit :latest, one with no tag at all
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sloppy
+spec:
+  containers:
+    - name: web
+      image: nginx:latest
+    - name: cache
+      image: redis

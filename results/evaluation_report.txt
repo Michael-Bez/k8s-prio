@@ -1,0 +1,126 @@
+corpus:   OWASP Kubernetes Goat
+source:   https://github.com/madhuakula/kubernetes-goat
+release:  v2.3.0 (commit aa72b6173320ebe23fe7b5395d026dae3336e399)
+corpus-id: kubernetes-goat
+directory: corpus/kubernetes-goat-2.3.0
+platform: Linux 7.1.8-200.fc44.x86_64, Python 3.14.7
+
+--- corpus profile ---
+files seen:    28
+files parsed:  16
+files skipped: 12
+skipped documents by reason:
+       5  helm template
+       7  no kind or metadata.name
+
+objects parsed: 34   (workloads 13, non-workloads 21)
+objects by kind:
+       1  ClusterPolicy
+       1  ClusterRole
+       1  ClusterRoleBinding
+       1  DaemonSet
+       8  Deployment
+       4  Job
+       2  Namespace
+       1  Role
+       1  RoleBinding
+       3  Secret
+       9  Service
+       2  ServiceAccount
+
+scan time: 0.041 s (836.5 objects/second)
+    median of 5 timed runs, first of 6 discarded as warm-up (min 0.04 s, mean 0.041 s)
+total findings: 82
+NOTE: fewer than 100 findings. This is a small sample, so the kappa below carries limited weight and its confidence interval will be wide. Reported as measured; the corpus was not padded and no rule was loosened.
+
+--- agreement over 82 findings ---
+
+heuristic \ ssvc      Act  Attend  Track*   Track
+Act                     3       0       0       0
+Attend                 33      20       2       1
+Track*                  0       0       0      23
+Track                   0       0       0       0
+
+observed agreement (po): 0.2805
+expected agreement (pe): 0.1895
+Cohen's kappa:           0.112 (slight agreement)
+95% bootstrap interval (finding-level):  0.057 to 0.175
+95% bootstrap interval (rule-level):    0.000 to 0.516   (0 undefined resamples discarded)
+    the rule-level interval is the defensible one: findings within a rule share one score and one outcome by construction, so they are not independent observations
+linear weighted kappa:   0.367   (Cohen 1968; counts a three band gap as worse than one)
+
+--- agreement over the rule set (11 rules that fired) ---
+one row per rule, ignoring how many findings it produced:
+    rule-set kappa:          0.250 (fair agreement)
+    rule-set weighted kappa: 0.412
+    This is agreement between the two METHODS. The finding-level kappa
+    above also reflects corpus composition, because a rule that fires
+    24 times counts 24 times there and once here.
+    Descriptive only: it is computed from 11 rows, so it is
+    stable across corpora but NOT more precise than the finding-level
+    figure. Neither number supersedes the other.
+
+marginal distributions:
+label        heuristic       %      ssvc       %
+Act                  3     3.7        36    43.9
+Attend              56    68.3        20    24.4
+Track*              23    28.0         2     2.4
+Track                0     0.0        24    29.3
+
+divergent findings: 59 of 82 (72.0%)
+    heuristic ranked higher: 26
+    ssvc ranked higher:      33
+disagreement size:
+    1 band(s) apart: 58
+    2 band(s) apart: 1
+    3 band(s) apart: 0
+
+--- findings per rule, with divergence ---
+rule           findings  diverged  heur higher  ssvc higher
+K8S-NET-001           1         0            0            0
+K8S-NET-002           3         3            3            0
+K8S-RBC-001           2         2            2            0
+K8S-RBC-002           1         0            0            0
+K8S-SEC-001           3         0            0            0
+K8S-SEC-002           1         1            1            0
+K8S-SEC-003          14         0            0            0
+K8S-SEC-004           4         0            0            0
+K8S-SEC-005           0         0            0            0
+K8S-SEC-006          33        33            0           33
+K8S-WKL-001          14        14           14            0
+K8S-WKL-002           6         6            6            0
+
+--- why the divergences happen ---
+general mechanism: the first four causes are structural differences between
+CVSS-style scoring and the SSVC tree, and exist on any corpus. The fifth,
+band-floor mismatch, is a range mismatch specific to what a corpus produces.
+dominant cause         findings  one-band  multi-band
+remediation-pricing          35        35           0
+impact-granularity            1         0           1
+band-floor-mismatch          23        23           0
+
+corpus pattern: the divergent findings come from 6 rules; the largest single contributor is K8S-SEC-006 (33 findings).
+Both engines score on the rule id alone, so all of a rule's findings diverge together - rules that fire in bulk dominate the pattern.
+The 23 band-floor-mismatch findings above and the empty Track row of the agreement matrix are the same fact seen twice: the heuristic's lowest score on this corpus is 5.30, so it never uses Track at all, while SSVC assigns it freely. Those findings could not have agreed no matter what any single factor said.
+
+--- weight sensitivity ---
+profile            kappa  weighted      95% interval  divergent
+default            0.112     0.367      0.06 to 0.18         59
+equal              0.050     0.085      0.01 to 0.10         59
+impact-heavy       0.549     0.717      0.44 to 0.66         27
+exploit-heavy      0.131     0.314      0.07 to 0.20         57
+no-remediation     0.603     0.749      0.51 to 0.70         24
+
+rules whose heuristic band moved compared with the default profile:
+    equal: K8S-WKL-001 Track*->Attend, K8S-WKL-002 Track*->Attend
+    impact-heavy: K8S-RBC-002 Attend->Act, K8S-SEC-006 Attend->Act
+    exploit-heavy: K8S-RBC-001 Attend->Track*, K8S-WKL-002 Track*->Attend
+    no-remediation: K8S-RBC-001 Attend->Track*, K8S-SEC-006 Attend->Act
+
+--- paired test: no-remediation minus default (rule-level) ---
+95% interval on the kappa difference: 0.000 to 0.882   (median 0.443)
+resamples showing no improvement (difference <= 0): 216 of 2000 (10.8%)
+reading: removing remediation pricing raises kappa in about 89 of 100 rule-level resamples.
+This is NOT claimed as statistically significant: the interval's lower bound does not exclude zero, and the share of resamples showing no improvement is above the usual 5% threshold. Both facts stand together: the effect is consistent but the corpus is too small to establish it formally.
+
+bootstrap: 2000 resamples, seed 20260802

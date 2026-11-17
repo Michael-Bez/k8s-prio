@@ -1,0 +1,10 @@
+# a namespace with a workload but no NetworkPolicy anywhere
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shop-api
+  namespace: shop
+spec:
+  containers:
+    - name: api
+      image: api:2.0

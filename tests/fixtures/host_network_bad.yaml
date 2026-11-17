@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sniffer
+spec:
+  hostNetwork: true
+  containers:
+    - name: sniffer
+      image: tools:1.0

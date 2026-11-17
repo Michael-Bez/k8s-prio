@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netfixer
+spec:
+  containers:
+    - name: netfixer
+      image: netfixer:1.0
+      securityContext:
+        capabilities:
+          add:
+            - NET_ADMIN
+            - SYS_ADMIN
